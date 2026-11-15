@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>○× Recognition AI</title>
+        <link rel="stylesheet" href="style.css" />
+        <script src="script.js" defer></script>
+    </head>
+    <body>
+        <main>
+            <h1>○× Recognition AI</h1>
+
+            <section>
+                <h2>画像入力</h2>
+                <p class="info">マウスまたは指で○や×を描いてください。</p>
+                <canvas id="canvas" width="280" height="280"></canvas>
+                <div class="buttons">
+                    <button id="clearButton" class="clear">canvas消去</button>
+                    <button id="circleButton" class="circle">
+                        ○として登録
+                    </button>
+                    <button id="crossButton" class="cross">×として登録</button>
+                </div>
+            </section>
+
+            <section>
+                <h2>学習データ</h2>
+                <div class="data-count">
+                    <div>
+                        <div class="count green" id="circleCount">0</div>
+                        <div class="info">○のデータ</div>
+                    </div>
+                    <div>
+                        <div class="count blue" id="crossCount">0</div>
+                        <div class="info">×のデータ</div>
+                    </div>
+                </div>
+                <p class="info" id="datasetInfo">登録データ：0件</p>
+                <button id="deleteDataButton" class="danger">
+                    学習データをすべて削除
+                </button>
+            </section>
+
+            <section>
+                <h2>ニューラルネットワーク</h2>
+                <div class="metric">
+                    <span>入力層</span><strong>256</strong>
+                </div>
+                <div class="metric"><span>隠れ層</span><strong>32</strong></div>
+                <div class="metric"><span>出力層</span><strong>2</strong></div>
+                <div class="metric">
+                    <span>活性化関数</span><strong>ReLU / Softmax</strong>
+                </div>
+                <div class="metric">
+                    <span>学習方式</span><strong>SGD</strong>
+                </div>
+
+                <button id="trainButton" class="train">学習開始</button>
+                <div class="status" id="trainStatus">まだ学習していません</div>
+
+                <div class="metric">
+                    <span>学習回数</span><strong id="epochDisplay">0</strong>
+                </div>
+                <div class="metric">
+                    <span>Loss</span><strong id="lossDisplay">---</strong>
+                </div>
+                <div class="metric">
+                    <span>学習データ正解率</span
+                    ><strong id="accuracyDisplay">---</strong>
+                </div>
+            </section>
+
+            <section>
+                <h2>学習状況（Loss）</h2>
+                <p class="info">学習回数に対するLossの変化を表示します。</p>
+                <canvas
+                    id="lossChart"
+                    class="chart"
+                    width="640"
+                    height="320"
+                ></canvas>
+                <p class="info">横軸：Epoch（学習回数） / 縦軸：Loss（損失）</p>
+            </section>
+
+            <section>
+                <h2>ニューラルネットワーク可視化</h2>
+                <p class="info">
+                    ニューロンの明るさは活性化の強さ、
+                    接続線の色は重みの正負を表します。
+                </p>
+                <canvas
+                    id="networkCanvas"
+                    class="network"
+                    width="900"
+                    height="520"
+                ></canvas>
+                <div class="legend info">
+                    <span class="input-color">● 入力層</span>
+                    <span class="hidden-color">● 隠れ層</span>
+                    <span class="circle-color">● ○出力</span>
+                    <span class="cross-color">● ×出力</span>
+                    <span class="positive-color">― 正の重み</span>
+                    <span class="negative-color">― 負の重み</span>
+                </div>
+                <p class="info" id="networkInfo">
+                    画像を判定するとニューロンの反応が表示されます。
+                </p>
+            </section>
+
+            <section>
+                <h2>AIによる画像認識</h2>
+                <button id="predictButton" class="predict" disabled>
+                    この画像を判定
+                </button>
+                <div class="result">
+                    <div class="result-symbol" id="resultSymbol">？</div>
+                    <div class="result-percent" id="resultPercent">---</div>
+                </div>
+                <div class="probability">
+                    <div>○：<strong id="circleProbability">---</strong></div>
+                    <div class="bar-bg">
+                        <div class="bar" id="circleBar"></div>
+                    </div>
+                    <div>×：<strong id="crossProbability">---</strong></div>
+                    <div class="bar-bg">
+                        <div class="bar" id="crossBar"></div>
+                    </div>
+                </div>
+                <p class="info" id="predictionStatus">まだ学習していません</p>
+            </section>
+
+            <section>
+                <h2>システム情報</h2>
+                <div class="metric">
+                    <span>登録データ</span
+                    ><strong id="systemDataset">0件</strong>
+                </div>
+                <div class="metric">
+                    <span>モデル状態</span
+                    ><strong id="modelStatus">未学習</strong>
+                </div>
+                <div class="metric">
+                    <span>実行環境</span><strong>JavaScript</strong>
+                </div>
+                <p class="info">外部ライブラリなし / ブラウザ内で動作</p>
+            </section>
+        </main>
+    </body>
+</html>
